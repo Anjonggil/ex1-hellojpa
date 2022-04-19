@@ -53,7 +53,62 @@ public class JpaMain {
             em.persist(member1);
             em.persist(member2);
 
+            Member findMember = em.find(Member.class, 150L);
+            findMember.setName("test");
+
+            /*
+             * 준영속 상태
+             *
+             * 영속성 컨텍스트에서 빼버리는 것
+             *
+             * detach
+             * 객체를 표적해서 빼버리는것
+             *
+             * clear
+             * 전체 제거
+             * */
+
+            em.detach(findMember);
+
             tx.commit(); // 실제 쿼리의 경우에는 COMMIT 에서 날라감
+
+            /*
+             * 변경 감지
+             *
+                 * commit이 발생할 경우 엔티티와 스냅샷을 비교
+                 *
+                 * entity가 영속성 컨텍스트 안에 들어왔을 때 entity 스냅샷을 저장
+                 * 그리고 커밋이 되는 시점에서 entity가 변경이 되었을 경우 entity와 스냅샷을 비교한 뒤 변경되었을 경우 쿼리를 쓰기 지연 SQL 저장소에 저장
+                 *
+                 * 쉽게 생각 하면 JPA는 값이 변경 되면 무조건 update 쿼리가 날라간다.
+             * */
+
+            /*
+             * flush
+             *
+             * 영속성 컨텍스트의 변경내용을 데이터베이스에 반영
+             * 플러시 발생
+             *
+             * 변경 감지
+             *
+             * 수정된 엔티티 쓰기 지연 SQL 저장소에 등록
+             *
+             * 쓰기 지연 SQL 저장소의 쿼리를 데이터베이스에 전송
+                * 플러시 하는 방법
+                *
+                * em.flush() 직접호출
+                *
+                * transaction commit
+                *
+                * jpql 실행 시
+                *
+                *
+                    *  영속성 컨텍스트를 비우지 않음
+                    *  영속성 컨텍스트릐 변경 내용을 데이터베이스에 동기화
+                    *  트랜잭션이라는 작업단위가 중요한데 커밋직전에만 동기화 되면 된다.
+                * */
+
+
         }catch (Exception e){
             tx.rollback();
         }finally {
