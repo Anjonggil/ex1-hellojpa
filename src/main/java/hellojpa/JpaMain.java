@@ -47,14 +47,14 @@ public class JpaMain {
 //
 //            System.out.println("result = " + (findMember1 == findMember2)); // 엔티티의 동일성을 보장
 
-            Member member1 = new Member(150L, "A");
-            Member member2 = new Member(160L, "B");
-
-            em.persist(member1);
-            em.persist(member2);
-
-            Member findMember = em.find(Member.class, 150L);
-            findMember.setName("test");
+//            Member member1 = new Member(150L, "A");
+//            Member member2 = new Member(160L, "B");
+//
+//            em.persist(member1);
+//            em.persist(member2);
+//
+//            Member findMember = em.find(Member.class, 150L);
+//            findMember.setName("test");
 
             /*
              * 준영속 상태
@@ -68,7 +68,9 @@ public class JpaMain {
              * 전체 제거
              * */
 
-            em.detach(findMember);
+//            em.detach(findMember);
+
+            Member member = new Member();
 
             tx.commit(); // 실제 쿼리의 경우에는 COMMIT 에서 날라감
 
