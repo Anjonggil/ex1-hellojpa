@@ -1,16 +1,7 @@
 package hellojpa;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
-import java.util.Date;
 
-/*
-* 요구사항 추가
-*
-* 1. 회원은 일반 회원과 관리자로 구분해야 한다.
-* 2. 회원 가입일과 수정일이 있어야 한다.
-* 3. 회원을 설명할 수 있는 필드가 있어야 한다. 이 필드는 길이 제한이 없다.
-*  */
 @Entity
 public class Member {
     @Id @GeneratedValue
@@ -46,7 +37,18 @@ public class Member {
 
     public void setTeam(Team team) {
         this.team = team;
+        //team을 세팅하는 시점에 코드를 추가해주자!!
+        //이거 히트다..
+        team.getMembers().add(this);
     }
+    /*
+     * 요구사항 추가
+     *
+     * 1. 회원은 일반 회원과 관리자로 구분해야 한다.
+     * 2. 회원 가입일과 수정일이 있어야 한다.
+     * 3. 회원을 설명할 수 있는 필드가 있어야 한다. 이 필드는 길이 제한이 없다.
+     *  */
+
     //    @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY) // 이 경우에는 commit 시점이 아닌 persist 가 실행 될때 INSERT가 됨.
 //    private Long id;
