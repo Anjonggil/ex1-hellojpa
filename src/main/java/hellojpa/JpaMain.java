@@ -70,9 +70,7 @@ public class JpaMain {
 
 //            em.detach(findMember);
 
-            Member member = new Member();
-
-            tx.commit(); // 실제 쿼리의 경우에는 COMMIT 에서 날라감
+            //tx.commit(); // 실제 쿼리의 경우에는 COMMIT 에서 날라감
 
             /*
              * 변경 감지
@@ -109,7 +107,23 @@ public class JpaMain {
                     *  영속성 컨텍스트릐 변경 내용을 데이터베이스에 동기화
                     *  트랜잭션이라는 작업단위가 중요한데 커밋직전에만 동기화 되면 된다.
                 * */
+            Team team = new Team();
+            team.setName("TeamA");
 
+            em.persist(team);
+
+            Member member = new Member();
+            member.setUsername("userA");
+            member.setTeam(team);
+
+            em.persist(member);
+
+            Member findMember = em.find(Member.class, member.getId());
+            Team findTeam = findMember.getTeam();
+
+            System.out.println(findTeam.getName());
+
+            tx.commit();
 
         }catch (Exception e){
             tx.rollback();
