@@ -1,6 +1,8 @@
 package hellojpa;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Member {
@@ -14,6 +16,22 @@ public class Member {
     @ManyToOne // 멤버 입장에서 many team 입장에서 one  -> 관계가 무엇인지
     @JoinColumn(name = "TEAM_ID") // -> 외래키를 설정
     private Team team;
+
+    @OneToOne
+    @JoinColumn(name = "LOCKER_ID")
+    private Locker locker;
+
+    @OneToMany(mappedBy = "member")
+    private List<MemberProduct> products = new ArrayList<>();
+
+//    @ManyToMany
+//    @JoinTable(name = "MEMBER_PRODUCT")
+//    private List<Product> products = new ArrayList<>();
+    /*
+    * 실무에서 다대다 맵핑을 사용할 수 없는 이유
+    *
+    * 중간 테이블에 맵핑 정보 이외에 다른 정보를 넣을 수 없음
+    * 중간 숨어있는 테이블로 인해 쿼리가 이상하게 나감감    * */
 
     public Long getId() {
         return id;
