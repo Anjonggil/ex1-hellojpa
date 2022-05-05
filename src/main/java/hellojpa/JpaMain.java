@@ -106,28 +106,28 @@ public class JpaMain {
                     *  영속성 컨텍스트릐 변경 내용을 데이터베이스에 동기화
                     *  트랜잭션이라는 작업단위가 중요한데 커밋직전에만 동기화 되면 된다.
                 * */
-            Team team = new Team();
-            team.setName("TeamA");
-            //team.getMembers().add(member);
-            //연관관계의 주인에 값을 입력하지 않는다. 이 경우 외래키의 값이 null이 들어가짐;;
-
-            em.persist(team);
-
-            Member member = new Member();
-            member.setUsername("userA");
-            member.setTeam(team);
-
-            Member member1 = new Member();
-            member1.setUsername("userB");
-            member1.setTeam(team);
-
-            Member member2 = new Member();
-            member2.setUsername("userC");
-            member2.setTeam(team);
-
-            em.persist(member);
-            em.persist(member1);
-            em.persist(member2);
+//            Team team = new Team();
+//            team.setName("TeamA");
+//            //team.getMembers().add(member);
+//            //연관관계의 주인에 값을 입력하지 않는다. 이 경우 외래키의 값이 null이 들어가짐;;
+//
+//            em.persist(team);
+//
+//            Member member = new Member();
+//            member.setUsername("userA");
+//            member.setTeam(team);
+//
+//            Member member1 = new Member();
+//            member1.setUsername("userB");
+//            member1.setTeam(team);
+//
+//            Member member2 = new Member();
+//            member2.setUsername("userC");
+//            member2.setTeam(team);
+//
+//            em.persist(member);
+//            em.persist(member1);
+//            em.persist(member2);
 
             // 그냥 두가지 다 값을 넣어주자
             // 왜냐하면 transaction commit이 날라가거나 flush로 데이터를 넣어주지 않으면 list 를 사용 할때 세팅이 되어있지 않다
@@ -137,10 +137,9 @@ public class JpaMain {
 //            em.flush();
 //            em.clear();
 //
-
-            Member findMember = em.find(Member.class, member.getId());
-            Team findTeam = findMember.getTeam();
-
+//
+//            Member findMember = em.find(Member.class, member.getId());
+//            Team findTeam = findMember.getTeam();
             tx.commit();
 
         }catch (Exception e){
