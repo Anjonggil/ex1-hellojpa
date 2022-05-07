@@ -140,6 +140,37 @@ public class JpaMain {
 //
 //            Member findMember = em.find(Member.class, member.getId());
 //            Team findTeam = findMember.getTeam();
+
+            Member member = new Member();
+            member.setUsername("hello");
+
+            em.persist(member);
+
+            em.flush();
+            em.clear();
+
+            Member findMember = em.getReference(Member.class, member.getId());
+            /*
+            * 프록시
+            * getReference
+            *
+            * 데이터베이스 조회를 미루는 가짜 엔티티 객체 조회
+            *
+            * 프록시 특징
+            *
+            * 실제 클래스를 상속 받아서 만들어짐
+            * 실제 클래스와 겉 모양이 같다.
+            * 사용하는 입장에서 진짜 객체인지 프록시 객체인지 구분하지 않고 사용하면됨
+            * 프록시 객체는 실제 객체의 참조를 보관
+            * 프록시 객체를 호출하면 프록시 객체는 실제 객체의 메소드를 호출
+            * 프록시 객체는 처음 사용할때 한번만 조회
+            * 프록시 객체릃 초기화 힐께 프록시 객체가 실제 엔티티로 바뀌는 것은 아님 초기화 되면 프록시 객체를 통해서 실제 엔티티에 접근 가능
+            * 프록시 객체는 원본 엔티티를 상속 받음, 따라서 타입 체크시 주의 해야함 (== X, instance of O)
+            * 영속성 컨택스트에 찾는 엔티티가 이미 있으면 em.getReference()를 호출해도 실제 엔티티 반환
+            * 영속성 컨텍스트의 도움을 받을 수 없는 준영속 상태일 때, 프록시를 초기화할때 문제 발생
+            *
+            * */
+            System.out.println(findMember.getId());
             tx.commit();
 
         }catch (Exception e){
