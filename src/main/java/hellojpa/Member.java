@@ -14,6 +14,12 @@ public class Member extends BaseEntity {
     @Column(name = "USERNAME")
     private String username;
 
+    @Embedded
+    private Period period;
+
+    @Embedded
+    private Address address;
+
     @ManyToOne(fetch = FetchType.LAZY) // 멤버 입장에서 many team 입장에서 one  -> 관계가 무엇인지
     @JoinColumn(name = "TEAM_ID") // -> 외래키를 설정
     private Team team;
@@ -173,4 +179,13 @@ public class Member extends BaseEntity {
     * 테스트 서버는 update, validate
     * 스테이징과 운영 서버는 validate 또는 none
     * */
+    /*
+     * 엔티티 타입
+     * @Entity로 정의 하는 객체
+     * 데이터가 뱐해도 식별자로 지속해서 추적 가능
+     *
+     * 값타입
+     * int, Integer, String처럼 단순히 값으로 사용하는 자바 기본타입이나 객체
+     * 식별자가 없고 값만 있으므로 변경시 추적 불가
+     */
 }
