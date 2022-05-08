@@ -14,11 +14,19 @@ public class Member extends BaseEntity {
     @Column(name = "USERNAME")
     private String username;
 
-    @ManyToOne // 멤버 입장에서 many team 입장에서 one  -> 관계가 무엇인지
+    @ManyToOne(fetch = FetchType.LAZY) // 멤버 입장에서 many team 입장에서 one  -> 관계가 무엇인지
     @JoinColumn(name = "TEAM_ID") // -> 외래키를 설정
     private Team team;
 
-    @OneToOne
+    /*
+    * 프록시와 지연 로딩 주의
+    *
+    * 즉시 로딩을 적용하면 예상하지 못한 SQL이 발생
+    * 즉시 로딩은 JPQL에서 N + 1문제를 일으킨다
+    * 기본이 LAZY로 설정
+    * */
+
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "LOCKER_ID")
     private Locker locker;
 
