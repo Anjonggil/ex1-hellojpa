@@ -24,6 +24,38 @@ public class Member extends BaseEntity {
     @JoinColumn(name = "TEAM_ID") // -> 외래키를 설정
     private Team team;
 
+    public Period getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(Period period) {
+        this.period = period;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public Locker getLocker() {
+        return locker;
+    }
+
+    public void setLocker(Locker locker) {
+        this.locker = locker;
+    }
+
+    public List<MemberProduct> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<MemberProduct> products) {
+        this.products = products;
+    }
+
     /*
     * 프록시와 지연 로딩 주의
     *
