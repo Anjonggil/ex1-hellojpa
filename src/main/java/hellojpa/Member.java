@@ -3,7 +3,9 @@ package hellojpa;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Member extends BaseEntity {
@@ -19,6 +21,45 @@ public class Member extends BaseEntity {
 
     @Embedded
     private Address address;
+
+    @ElementCollection
+    @CollectionTable(name = "FAVORITE_FOOD", joinColumns = @JoinColumn(name = "MEMBER_ID"))
+    @Column(name = "FOOD_NAME")
+    private Set<String> favoriteFoods = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
+    @JoinColumn(name = "MEMBER_ID")
+    private List<AddressEntity> addressHistory = new ArrayList<>();
+
+//    @ElementCollection
+//    @CollectionTable(name = "ADDRESS", joinColumns = @JoinColumn(name = "MEMBER_ID"))
+//    private List<Address> addressHistory = new ArrayList<>(); // 이런 식으로 사용하면 안됨
+
+    //값 타입 컬렉션 대안
+
+    /*
+    * 실무에서는 상황에 따라 값타입 컬렉션 대신에 일대다 관계를 고려
+    * 일대다 관계를 위한 엔티티를 만들고, 여기에서 값 타입을 사용
+    * 영속성 전이 + 고아 객체 제거를 사용하여 값타입 컬렉션처럼 사용
+    * */
+
+    /*
+    * 값타입 컬렉션
+    *
+    * 값 타입을 하나 이상 저장할때 사용
+    * 데이터 베이스는 컬렉션을 같은 테이블에 저장할 수 없다.
+    * 컬렉션을 저장하기 위한 별도의 테이블이 필요함
+    * 값타입 컬렉션의 생명주기는 entity에 의존한다.
+    * 컬랙션 값타입의 경우 지연로딩으로 가져오게됨
+    * 컬렉션의 데이터만 변경해도 update 쿼리가 날라감
+    *
+    * 제약 사항
+    *
+    * 값 타입은 엔티티와 다르게 식별자 개념이 없다.
+    * 값은 변경하면 추적이 어렵다.
+    * 값타입 컬렉션에 변경이 발생하면, 주인 엔티티와 연관된 모든 데이터를 삭제하고, 값 타입 컬렉션에 있는 현재값을 모두 다시 저장한다.
+    * 값 타입 컬렉션을 매핑하는 테이블은 모든 컬럼을 묶어서 기본 키를 구성해야함: null 입력 X, 중복저장 X
+    * */
 
     @ManyToOne(fetch = FetchType.LAZY) // 멤버 입장에서 many team 입장에서 one  -> 관계가 무엇인지
     @JoinColumn(name = "TEAM_ID") // -> 외래키를 설정
