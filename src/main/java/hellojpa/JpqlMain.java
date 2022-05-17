@@ -16,10 +16,16 @@ public class JpqlMain {
         tx.begin();
 
         try{
+            Member member = new Member();
+            member.setUsername("Member1");
+            em.persist(member);
+            em.flush();
+            em.clear();
+
             List<Member> result = em.createQuery("SELECT m FROM Member m where m.username like '%kim%'",Member.class).getResultList();
 
-            for (Member member : result) {
-                System.out.println("member = " + member);
+            for (Member member1 : result) {
+                System.out.println("member = " + member1);
             }
             tx.commit();
         }catch (Exception e){
